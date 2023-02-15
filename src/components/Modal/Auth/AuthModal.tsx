@@ -1,17 +1,19 @@
 import { changeIsOpen } from "@/store/authModalSlice";
 import {
-  Button,
+  Flex,
   Modal,
-  ModalOverlay,
+  ModalBody,
+  ModalCloseButton,
   ModalContent,
   ModalHeader,
-  ModalCloseButton,
-  ModalBody,
-  ModalFooter,
+  ModalOverlay,
+  Text,
 } from "@chakra-ui/react";
 import React from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
+import AuthInputs from "./AuthInputs";
+import OAuthButtons from "./OAuthButtons";
 
 const AuthModal: React.FC = () => {
   const modalState = useSelector((state: RootState) => state.authModal);
@@ -25,9 +27,33 @@ const AuthModal: React.FC = () => {
       <Modal isOpen={modalState.isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>{modalState.view}</ModalHeader>
+          <ModalHeader textAlign="center">
+            {modalState.view === "login" && "Login"}
+            {modalState.view === "signup" && "Sign Up"}
+            {modalState.view === "resetPassword" && "Reset Password"}
+          </ModalHeader>
           <ModalCloseButton />
-          <ModalBody>MODAL!!</ModalBody>
+          <ModalBody
+            display="flex"
+            flexDirection="column"
+            alignItems="center"
+            justifyContent="center"
+            pb={6}
+          >
+            <Flex
+              direction="column"
+              align="center"
+              justify="center"
+              width="70%"
+            >
+              <OAuthButtons />
+              <Text color="gray.400" fontWeight={500}>
+                OR
+              </Text>
+              <AuthInputs />
+              {/* <ResetPassword /> */}
+            </Flex>
+          </ModalBody>
         </ModalContent>
       </Modal>
     </>
