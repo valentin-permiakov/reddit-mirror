@@ -42,6 +42,7 @@ const SignUp: React.FC = () => {
         name="email"
         placeholder="email"
         type="email"
+        autoComplete="email"
         onChange={onChange}
         mb={4}
         bg="gray.50"
@@ -64,6 +65,7 @@ const SignUp: React.FC = () => {
         name="password"
         placeholder="password"
         type="password"
+        autoComplete="new-password"
         onChange={onChange}
         mb={6}
         bg="gray.50"
@@ -86,6 +88,7 @@ const SignUp: React.FC = () => {
         name="confirmPassword"
         placeholder="confirm password"
         type="password"
+        autoComplete="new-password"
         onChange={onChange}
         mb={6}
         bg="gray.50"

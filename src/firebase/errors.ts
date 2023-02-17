@@ -5,4 +5,5 @@ export const FIREBASE_ERRORS = {
   "auth/invalid-password": "Password must contain at least 6 symbols",
   "auth/weak-password": "Password must contain at least 6 symbols",
   "auth/user-not-found": "Invalid email or password",
+  "auth/wrong-password": "Invalid email or password",
 };
