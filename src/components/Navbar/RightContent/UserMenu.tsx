@@ -1,24 +1,24 @@
+import { auth } from "@/firebase/clientApp";
+import { changeIsOpen } from "@/store/authModalSlice";
 import { ChevronDownIcon } from "@chakra-ui/icons";
 import {
+  Flex,
+  Icon,
   Menu,
   MenuButton,
-  Button,
-  MenuList,
-  MenuItem,
-  Icon,
-  Flex,
   MenuDivider,
+  MenuItem,
+  MenuList,
+  Text,
 } from "@chakra-ui/react";
-import { User, signOut } from "firebase/auth";
+import { signOut, User } from "firebase/auth";
 import React from "react";
-import { FaRedditSquare } from "react-icons/fa";
-import { VscAccount } from "react-icons/vsc";
-import { IoSparkles } from "react-icons/io5";
 import { CgProfile } from "react-icons/cg";
+import { FaRedditSquare } from "react-icons/fa";
 import { MdOutlineLogin } from "react-icons/md";
-import { auth } from "@/firebase/clientApp";
+import { VscAccount } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
-import { changeIsOpen } from "@/store/authModalSlice";
+import { IoSparkles } from "react-icons/io5";
 
 type UserMenuProps = {
   user?: User | null;
@@ -37,7 +37,36 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
         <Flex align="center">
           <Flex align="center">
             {user ? (
-              <Icon as={FaRedditSquare} mr={1} color="gray.300" fontSize={24} />
+              <>
+                <Icon
+                  as={FaRedditSquare}
+                  mr={1}
+                  color="gray.300"
+                  fontSize={24}
+                />
+                <Flex
+                  direction="column"
+                  display={{ base: "none", lg: "flex" }}
+                  fontSize="8pt"
+                  align="flex-start"
+                  mr={2}
+                  maxWidth="110px"
+                >
+                  <Text
+                    fontWeight={800}
+                    whiteSpace="nowrap"
+                    overflow="hidden"
+                    textOverflow="ellipsis"
+                    width="100%"
+                  >
+                    {user?.displayName || user.email?.split("@")[0]}
+                  </Text>
+                  <Flex>
+                    <Icon as={IoSparkles} color="brand.100" mr={1} />
+                    <Text color="gray.400">1 karma</Text>
+                  </Flex>
+                </Flex>
+              </>
             ) : (
               <Icon as={VscAccount} mr={1} fontSize={24} color="gray.400" />
             )}
