@@ -19,6 +19,7 @@ import { MdOutlineLogin } from "react-icons/md";
 import { VscAccount } from "react-icons/vsc";
 import { useDispatch } from "react-redux";
 import { IoSparkles } from "react-icons/io5";
+import { reset } from "@/store/communitiesSlice";
 
 type UserMenuProps = {
   user?: User | null;
@@ -26,6 +27,10 @@ type UserMenuProps = {
 
 const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
   const dispatch = useDispatch();
+  const logout = async () => {
+    await signOut(auth);
+    dispatch(reset());
+  };
   return (
     <Menu>
       <MenuButton
@@ -92,7 +97,7 @@ const UserMenu: React.FC<UserMenuProps> = ({ user }) => {
               fontSize="10pt"
               fontWeight={700}
               _hover={{ bg: "blue.500", textColor: "white" }}
-              onClick={() => signOut(auth)}
+              onClick={logout}
             >
               <Flex align="center">
                 <Icon as={MdOutlineLogin} mr={2} fontSize={20} />

@@ -1,9 +1,11 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { authModalSlice } from "./authModalSlice";
+import { communitiesSlice } from "./communitiesSlice";
 
 export const store = configureStore({
   reducer: {
     authModal: authModalSlice.reducer,
+    communities: communitiesSlice.reducer,
   },
 });
 
