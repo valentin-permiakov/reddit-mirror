@@ -30,6 +30,11 @@ export const communitiesSlice = createSlice({
     addCommunity: (state, action: PayloadAction<CommunitySnippet>) => {
       state.mySnippets.push(action.payload);
     },
+    removeCommunity: (state, action: PayloadAction<string>) => {
+      state.mySnippets = state.mySnippets.filter(
+        (snippet) => snippet.communityId !== action.payload
+      );
+    },
     updateCommunitySnippets: (
       state,
       action: PayloadAction<CommunitySnippet[]>
@@ -40,5 +45,5 @@ export const communitiesSlice = createSlice({
   },
 });
 
-export const { addCommunity, updateCommunitySnippets, reset } =
+export const { addCommunity, removeCommunity, updateCommunitySnippets, reset } =
   communitiesSlice.actions;
