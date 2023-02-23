@@ -60,6 +60,7 @@ const ImageUpload: React.FC<ImageUploadProps> = ({
               ref={selectedFileRef}
               type="file"
               onChange={onSelectImage}
+              accept="image/*, video/*"
               hidden
             />
           </Flex>

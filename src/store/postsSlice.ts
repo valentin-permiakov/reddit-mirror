@@ -10,9 +10,9 @@ export type Post = {
   body: string;
   numberOfComments: number;
   voteStatus: number;
-  imgURL?: string;
-  communityImgURL?: string;
-  createdAt: Timestamp;
+  imageURL?: string;
+  communityImageURL?: string;
+  createdAt: { seconds: number; nanoseconds: number };
 };
 
 interface PostState {
@@ -29,5 +29,14 @@ const initialState: PostState = {
 export const postsSlice = createSlice({
   name: "posts",
   initialState,
-  reducers: {},
+  reducers: {
+    loadPosts: (state, action: PayloadAction<Post[]>) => {
+      state.posts = action.payload;
+    },
+    deletePost: (state, action: PayloadAction<string>) => {
+      state.posts = state.posts.filter((post) => post.id !== action.payload);
+    },
+  },
 });
+
+export const { loadPosts, deletePost } = postsSlice.actions;

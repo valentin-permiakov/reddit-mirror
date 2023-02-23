@@ -1,17 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "../store/store";
-import {
-  addCommunity,
-  Community,
-  CommunitySnippet,
-  removeCommunity,
-  updateCommunitySnippets,
-} from "../store/communitiesSlice";
-import { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, fireStore } from "@/firebase/clientApp";
-import { changeIsOpen, changeView } from "@/store/authModalSlice";
+import { changeIsOpen } from "@/store/authModalSlice";
 import {
   collection,
   doc,
@@ -19,6 +8,17 @@ import {
   increment,
   writeBatch,
 } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addCommunity,
+  Community,
+  CommunitySnippet,
+  removeCommunity,
+  updateCommunitySnippets,
+} from "../store/communitiesSlice";
+import { RootState } from "../store/store";
 
 const useCommunityData = () => {
   const [isLoading, setisLoading] = useState(false);
