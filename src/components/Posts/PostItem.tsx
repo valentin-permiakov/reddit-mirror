@@ -28,7 +28,7 @@ type PostItemProps = {
   post: Post;
   userIsCreator: boolean;
   userVoteValue?: number;
-  onVote: () => {};
+  onVote: (post: Post, voteValue: number, communityId: string) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost: () => void;
 };
@@ -44,6 +44,7 @@ const PostItem: React.FC<PostItemProps> = ({
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [error, setError] = useState("");
+  // console.log(userVoteValue);
 
   const handleDelete = async () => {
     setError("");
@@ -87,7 +88,7 @@ const PostItem: React.FC<PostItemProps> = ({
           color={userVoteValue === 1 ? "brand.100" : "gray.400"}
           fontSize={22}
           _hover={{ color: "brand.100" }}
-          onClick={onVote}
+          onClick={() => onVote(post, 1, post.communityId)}
         />
         <Text fontSize="9pt">{post.voteStatus}</Text>
         <Icon
@@ -99,7 +100,7 @@ const PostItem: React.FC<PostItemProps> = ({
           color={userVoteValue === -1 ? "#4379ff" : "gray.400"}
           fontSize={22}
           _hover={{ color: "#4379ff" }}
-          onClick={onVote}
+          onClick={() => onVote(post, -1, post.communityId)}
         />
       </Flex>
       <Flex direction="column" width="100%">

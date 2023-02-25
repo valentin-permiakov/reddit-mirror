@@ -6,7 +6,7 @@ export interface Community {
   creatorId: string;
   numberOfMembers: number;
   privacyType: "public" | "restricted" | "private";
-  createdAt?: Timestamp;
+  createdAt?: { seconds: number; nanoseconds: number };
   imageURL?: string;
 }
 
@@ -18,7 +18,7 @@ export interface CommunitySnippet {
 
 interface CommunityState {
   mySnippets: CommunitySnippet[];
-  // visitedCommunities
+  currentCommunity?: Community;
 }
 
 const initialState: CommunityState = { mySnippets: [] };
@@ -41,9 +41,24 @@ export const communitiesSlice = createSlice({
     ) => {
       state.mySnippets = action.payload;
     },
-    reset: () => initialState,
+    updateCurrentCommunity: (state, action: PayloadAction<Community>) => {
+      state.currentCommunity = action.payload;
+    },
+    updateCommunityImage: (state, action: PayloadAction<string>) => {
+      if (state.currentCommunity)
+        state.currentCommunity.imageURL = action.payload;
+    },
+    reset: (state) => {
+      state.mySnippets = initialState.mySnippets;
+    },
   },
 });
 
-export const { addCommunity, removeCommunity, updateCommunitySnippets, reset } =
-  communitiesSlice.actions;
+export const {
+  addCommunity,
+  removeCommunity,
+  updateCommunitySnippets,
+  updateCurrentCommunity,
+  updateCommunityImage,
+  reset,
+} = communitiesSlice.actions;

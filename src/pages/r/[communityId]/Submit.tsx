@@ -4,9 +4,16 @@ import { Box, Text } from "@chakra-ui/react";
 import React from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth } from "@/firebase/clientApp";
+import { useSelector } from "react-redux";
+import { RootState } from "../../../store/store";
+import About from "@/components/Community/About";
 
 const SubmitPostPage: React.FC = () => {
   const [user] = useAuthState(auth);
+  const communityData = useSelector(
+    (state: RootState) => state.communities.currentCommunity
+  );
+
   return (
     <PageContent>
       <>
@@ -15,7 +22,9 @@ const SubmitPostPage: React.FC = () => {
         </Box>
         {user && <NewPostForm user={user} />}
       </>
-      <>{/* <About /> */}</>
+      <>
+        <About communityData={communityData!} />
+      </>
     </PageContent>
   );
 };
