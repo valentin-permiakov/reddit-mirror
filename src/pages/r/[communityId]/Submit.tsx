@@ -7,12 +7,12 @@ import { auth } from "@/firebase/clientApp";
 import { useSelector } from "react-redux";
 import { RootState } from "../../../store/store";
 import About from "@/components/Community/About";
+import useCommunityData from "@/hooks/useCommunityData";
 
 const SubmitPostPage: React.FC = () => {
   const [user] = useAuthState(auth);
-  const communityData = useSelector(
-    (state: RootState) => state.communities.currentCommunity
-  );
+
+  const { communityStateValue } = useCommunityData();
 
   return (
     <PageContent>
@@ -23,7 +23,9 @@ const SubmitPostPage: React.FC = () => {
         {user && <NewPostForm user={user} />}
       </>
       <>
-        <About communityData={communityData!} />
+        {communityStateValue.currentCommunity && (
+          <About communityData={communityStateValue.currentCommunity} />
+        )}
       </>
     </PageContent>
   );

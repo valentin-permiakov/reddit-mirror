@@ -47,7 +47,19 @@ export const postsSlice = createSlice({
     loadPostVotes: (state, action: PayloadAction<PostVote[]>) => {
       state.postVotes = action.payload;
     },
+    selectPost: (state, action: PayloadAction<Post | null>) => {
+      state.selectedPost = action.payload;
+    },
+    updateCommentCount: (state, action: PayloadAction<number>) => {
+      state.selectedPost!.numberOfComments += action.payload;
+    },
   },
 });
 
-export const { loadPosts, deletePost, loadPostVotes } = postsSlice.actions;
+export const {
+  loadPosts,
+  deletePost,
+  loadPostVotes,
+  selectPost,
+  updateCommentCount,
+} = postsSlice.actions;

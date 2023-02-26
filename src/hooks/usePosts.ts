@@ -7,6 +7,7 @@ import {
   loadPostVotes,
   Post,
   PostVote,
+  selectPost,
 } from "../store/postsSlice";
 import { deleteObject, ref } from "firebase/storage";
 import { storage, fireStore, auth } from "@/firebase/clientApp";
@@ -22,6 +23,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { getDocs } from "firebase/firestore";
 import { useEffect } from "react";
 import { changeIsOpen } from "@/store/authModalSlice";
+import { useRouter } from "next/router";
 const usePosts = () => {
   const dispatch = useDispatch();
   const postsStateValue = useSelector((state: RootState) => state.posts);
@@ -29,8 +31,15 @@ const usePosts = () => {
     (state: RootState) => state.communities.currentCommunity
   );
   const [user] = useAuthState(auth);
+  const router = useRouter();
 
-  const onVote = async (post: Post, voteValue: number, communityId: string) => {
+  const onVote = async (
+    event: React.MouseEvent<SVGElement, MouseEvent>,
+    post: Post,
+    voteValue: number,
+    communityId: string
+  ) => {
+    event.stopPropagation();
     //  check user auth
     if (!user?.uid) {
       dispatch(changeIsOpen(true));
@@ -108,15 +117,6 @@ const usePosts = () => {
         }
       }
 
-      // update post document
-      const postRef = doc(fireStore, "posts", post.id!);
-      console.log(voteStatus + voteChange);
-      batch.update(postRef, {
-        voteStatus: voteStatus + voteChange,
-      });
-
-      await batch.commit();
-
       // update the state
       const postIndex = postsStateValue.posts.findIndex(
         (item) => item.id === post.id
@@ -124,11 +124,28 @@ const usePosts = () => {
       updatedPosts[postIndex] = updatedPost;
       dispatch(loadPosts(updatedPosts));
       dispatch(loadPostVotes(updatedPostVotes));
+
+      if (postsStateValue.selectedPost) {
+        dispatch(selectPost(updatedPost));
+      }
+
+      // update post document
+      const postRef = doc(fireStore, "posts", post.id!);
+      batch.update(postRef, {
+        voteStatus: voteStatus + voteChange,
+      });
+
+      await batch.commit();
     } catch (error: any) {
       console.log("onVote error", error.message);
     }
   };
-  const onSelectPost = () => {};
+
+  const onSelectPost = (post: Post) => {
+    dispatch(selectPost(post));
+    router.push(`/r/${post.communityId}/comments/${post.id}`);
+  };
+
   const onDeletePost = async (post: Post): Promise<boolean> => {
     try {
       // check if there's an image
@@ -147,6 +164,7 @@ const usePosts = () => {
       return false;
     }
   };
+
   const setPostsStateValue = (posts: Post[]) => {
     dispatch(loadPosts(posts));
   };
