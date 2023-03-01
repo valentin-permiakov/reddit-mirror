@@ -18,6 +18,7 @@ import {
   Community,
   CommunitySnippet,
   removeCommunity,
+  updateCommunityMemberCount,
   updateCommunitySnippets,
   updateCurrentCommunity,
 } from "../store/communitiesSlice";
@@ -77,6 +78,7 @@ const useCommunityData = () => {
       const newSnippet: CommunitySnippet = {
         communityId: communityData.id,
         imageURL: communityData.imageURL || "",
+        isModerator: user?.uid === communityData.creatorId,
       };
 
       // creating a new community snippet for the user
@@ -98,6 +100,7 @@ const useCommunityData = () => {
 
       // update client state
       dispatch(addCommunity(newSnippet));
+      dispatch(updateCommunityMemberCount(1));
     } catch (error: any) {
       console.log("joinCommunity error", error.message);
       setError(error.message);
@@ -124,6 +127,7 @@ const useCommunityData = () => {
 
       // update client state
       dispatch(removeCommunity(communityId));
+      dispatch(updateCommunityMemberCount(-1));
     } catch (error: any) {
       console.log("leaveCommunity error", error.message);
       setError(error.message);

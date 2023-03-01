@@ -23,7 +23,7 @@ const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
   useEffect(() => {
     if (!communityData.id) return;
     dispatch(updateCurrentCommunity(communityData));
-  }, []);
+  }, [communityData]);
 
   if (!communityData.id) {
     return <NotFound communityName={communityData as unknown as string} />;

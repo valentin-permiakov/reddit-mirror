@@ -48,6 +48,16 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
       await updateDoc(doc(fireStore, "communities", communityData.id), {
         imageURL: downloadURL,
       });
+      await updateDoc(
+        doc(
+          fireStore,
+          "users",
+          `${user?.uid}/communitySnippets/${communityData.id}`
+        ),
+        {
+          imageURL: downloadURL,
+        }
+      );
       dispatch(updateCommunityImage(downloadURL));
     } catch (error: any) {
       console.log("onUpdateImage error", error.message);

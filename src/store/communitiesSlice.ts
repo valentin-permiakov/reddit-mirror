@@ -48,6 +48,10 @@ export const communitiesSlice = createSlice({
       if (state.currentCommunity)
         state.currentCommunity.imageURL = action.payload;
     },
+    updateCommunityMemberCount: (state, action: PayloadAction<number>) => {
+      if (state.currentCommunity)
+        state.currentCommunity.numberOfMembers += action.payload;
+    },
     reset: (state) => {
       state.mySnippets = initialState.mySnippets;
     },
@@ -60,5 +64,6 @@ export const {
   updateCommunitySnippets,
   updateCurrentCommunity,
   updateCommunityImage,
+  updateCommunityMemberCount,
   reset,
 } = communitiesSlice.actions;

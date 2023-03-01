@@ -2,12 +2,14 @@ import { configureStore } from "@reduxjs/toolkit";
 import { authModalSlice } from "./authModalSlice";
 import { communitiesSlice } from "./communitiesSlice";
 import { postsSlice } from "./postsSlice";
+import { communityDirectorySlice } from "./communityDirectorySlice";
 
 export const store = configureStore({
   reducer: {
     authModal: authModalSlice.reducer,
     communities: communitiesSlice.reducer,
     posts: postsSlice.reducer,
+    communityDirectory: communityDirectorySlice.reducer,
   },
 });
 
