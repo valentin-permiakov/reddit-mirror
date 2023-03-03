@@ -16,6 +16,7 @@ import { doc, updateDoc } from "firebase/firestore";
 import { getDownloadURL, ref, uploadString } from "firebase/storage";
 import moment from "moment";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { useRef, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { FaReddit } from "react-icons/fa";
@@ -37,6 +38,7 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
   );
   const selectedFileRef = useRef<HTMLInputElement>(null);
   const dispatch = useDispatch();
+  const router = useRouter();
 
   const onUpdateImage = async () => {
     if (!selectedFile) return;
@@ -110,11 +112,16 @@ const About: React.FC<AboutProps> = ({ communityData }) => {
               </Text>
             )}
           </Flex>
-          <Link href={`/r/${communityData.id}/submit`}>
-            <Button mt={1} height="30px" width="100%">
-              Create Post
-            </Button>
-          </Link>
+
+          <Button
+            mt={1}
+            height="30px"
+            width="100%"
+            onClick={() => router.push(`/r/${communityData.id}/Submit`)}
+          >
+            Create Post
+          </Button>
+
           {user?.uid === communityData.creatorId && (
             <>
               <Divider />
