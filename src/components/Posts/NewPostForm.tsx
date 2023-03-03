@@ -65,6 +65,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({
     // create the post object
     setError("");
     const { communityId } = router.query;
+    console.log(communityId);
     const newPost: Post = {
       communityId: communityId as string,
       communityImageURL: communityImageURL || "",
