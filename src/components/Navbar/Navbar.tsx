@@ -6,9 +6,12 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import CommunityDirectory from "./CommunityDirectory/CommunityDirectory";
 import RightContent from "./RightContent/RightContent";
 import SearchInput from "./SearchInput";
+import useDirectory from "../../hooks/useDirectory";
+import { defaultMenuItem } from "../../store/communityDirectorySlice";
 
 const Navbar: React.FC = () => {
   const [user, loading, error] = useAuthState(auth);
+  const { onSelectMenuItem } = useDirectory();
   return (
     <Flex
       bg="white"
@@ -20,16 +23,16 @@ const Navbar: React.FC = () => {
         align="center"
         width={{ base: "40px", md: "auto" }}
         mr={{ base: 0, md: 2 }}
+        cursor="pointer"
+        onClick={() => onSelectMenuItem(defaultMenuItem)}
       >
-        <Link href="/" style={{ display: "flex", alignItems: "center" }}>
-          <Image src="/images/redditFace.svg" alt="reddit logo" height="30px" />
-          <Image
-            src="/images/redditText.svg"
-            alt="reddit logo"
-            height="46px"
-            display={{ base: "none", md: "unset" }}
-          />
-        </Link>
+        <Image src="/images/redditFace.svg" alt="reddit logo" height="30px" />
+        <Image
+          src="/images/redditText.svg"
+          alt="reddit logo"
+          height="46px"
+          display={{ base: "none", md: "unset" }}
+        />
       </Flex>
       {user && <CommunityDirectory />}
       <SearchInput user={user} />

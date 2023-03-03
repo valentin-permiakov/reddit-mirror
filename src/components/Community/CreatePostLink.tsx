@@ -8,6 +8,7 @@ import { changeIsOpen } from "@/store/authModalSlice";
 import { FaReddit } from "react-icons/fa";
 import { IoImageOutline } from "react-icons/io5";
 import { BsLink45Deg } from "react-icons/bs";
+import { changeIsOpenDirectory } from "@/store/communityDirectorySlice";
 
 const CreatePostLink: React.FC = () => {
   const router = useRouter();
@@ -21,7 +22,16 @@ const CreatePostLink: React.FC = () => {
     }
 
     const { communityId } = router.query;
-    router.push(`/r/${communityId}/submit`);
+
+    if (communityId) {
+      router.push(`/r/${communityId}/submit`);
+      return;
+    }
+
+    // toggle community directory
+    dispatch(changeIsOpenDirectory());
+
+    dispatch(changeIsOpen);
   };
 
   return (

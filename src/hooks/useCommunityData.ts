@@ -15,13 +15,16 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addCommunity,
+  changeSnippetsFetched,
   Community,
   CommunitySnippet,
   removeCommunity,
+  updateCommunityMemberCount,
   updateCommunitySnippets,
   updateCurrentCommunity,
 } from "../store/communitiesSlice";
 import { RootState } from "../store/store";
+import { reset } from "@/store/communitiesSlice";
 
 const useCommunityData = () => {
   const [isLoading, setisLoading] = useState(false);
@@ -63,6 +66,7 @@ const useCommunityData = () => {
       const snippets = snippetDocs.docs.map((doc) => ({ ...doc.data() }));
 
       dispatch(updateCommunitySnippets(snippets as CommunitySnippet[]));
+      dispatch(changeSnippetsFetched(true));
     } catch (error: any) {
       console.log("getMySnippets error", error.message);
       setError(error.message);
@@ -77,6 +81,7 @@ const useCommunityData = () => {
       const newSnippet: CommunitySnippet = {
         communityId: communityData.id,
         imageURL: communityData.imageURL || "",
+        isModerator: user?.uid === communityData.creatorId,
       };
 
       // creating a new community snippet for the user
@@ -98,6 +103,7 @@ const useCommunityData = () => {
 
       // update client state
       dispatch(addCommunity(newSnippet));
+      dispatch(updateCommunityMemberCount(1));
     } catch (error: any) {
       console.log("joinCommunity error", error.message);
       setError(error.message);
@@ -124,6 +130,7 @@ const useCommunityData = () => {
 
       // update client state
       dispatch(removeCommunity(communityId));
+      dispatch(updateCommunityMemberCount(-1));
     } catch (error: any) {
       console.log("leaveCommunity error", error.message);
       setError(error.message);
@@ -151,7 +158,11 @@ const useCommunityData = () => {
   };
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      dispatch(reset());
+      dispatch(changeSnippetsFetched(false));
+      return;
+    }
     getMySnippets();
   }, [user]);
 

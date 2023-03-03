@@ -19,9 +19,10 @@ export interface CommunitySnippet {
 interface CommunityState {
   mySnippets: CommunitySnippet[];
   currentCommunity?: Community;
+  snippetsFetched: boolean;
 }
 
-const initialState: CommunityState = { mySnippets: [] };
+const initialState: CommunityState = { mySnippets: [], snippetsFetched: false };
 
 export const communitiesSlice = createSlice({
   name: "communities",
@@ -48,8 +49,15 @@ export const communitiesSlice = createSlice({
       if (state.currentCommunity)
         state.currentCommunity.imageURL = action.payload;
     },
+    updateCommunityMemberCount: (state, action: PayloadAction<number>) => {
+      if (state.currentCommunity)
+        state.currentCommunity.numberOfMembers += action.payload;
+    },
     reset: (state) => {
       state.mySnippets = initialState.mySnippets;
+    },
+    changeSnippetsFetched: (state, action: PayloadAction<boolean>) => {
+      state.snippetsFetched = action.payload;
     },
   },
 });
@@ -60,5 +68,7 @@ export const {
   updateCommunitySnippets,
   updateCurrentCommunity,
   updateCommunityImage,
+  updateCommunityMemberCount,
   reset,
+  changeSnippetsFetched,
 } = communitiesSlice.actions;

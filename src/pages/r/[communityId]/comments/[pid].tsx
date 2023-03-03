@@ -1,21 +1,21 @@
 /* eslint-disable react-hooks/exhaustive-deps */
+import About from "@/components/Community/About";
 import PageContent from "@/components/Layout/PageContent";
+import Comments from "@/components/Posts/Comments/Comments";
 import PostItem from "@/components/Posts/PostItem";
 import { auth, fireStore } from "@/firebase/clientApp";
-import React, { useEffect } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import usePosts from "../../../../hooks/usePosts";
-import { useRouter } from "next/router";
-import { doc, getDoc } from "firebase/firestore";
-import { useDispatch, useSelector } from "react-redux";
-import { Post, selectPost } from "@/store/postsSlice";
-import { RootState } from "../../../../store/store";
-import About from "@/components/Community/About";
 import useCommunityData from "@/hooks/useCommunityData";
-import Comments from "@/components/Posts/Comments/Comments";
+import { Post, selectPost } from "@/store/postsSlice";
 import { User } from "firebase/auth";
+import { doc, getDoc } from "firebase/firestore";
+import { NextPage } from "next";
+import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { useDispatch } from "react-redux";
+import usePosts from "../../../../hooks/usePosts";
 
-const PostPage: React.FC = () => {
+const PostPage: NextPage = () => {
   const { postsStateValue, setPostsStateValue, onVote, onDeletePost } =
     usePosts();
   const [user] = useAuthState(auth);

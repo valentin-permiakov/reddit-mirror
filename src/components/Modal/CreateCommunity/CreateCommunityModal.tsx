@@ -28,6 +28,7 @@ import {
 } from "firebase/firestore";
 import { fireStore, auth } from "@/firebase/clientApp";
 import { useAuthState } from "react-firebase-hooks/auth";
+import { useRouter } from "next/router";
 
 type CreateCommunityModalProps = {
   isOpen: boolean;
@@ -44,6 +45,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
   const [communityType, setCommunityType] = useState("public");
   const [nameError, setNameError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.value.length > 21) return;
@@ -99,6 +101,7 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
           {
             communityId: communityName,
             isModerator: true,
+            imageURL: "",
           }
         );
       });
@@ -108,6 +111,8 @@ const CreateCommunityModal: React.FC<CreateCommunityModalProps> = ({
     }
 
     setIsLoading(false);
+    handleClose();
+    router.push(`/r/${communityName}`);
   };
 
   return (

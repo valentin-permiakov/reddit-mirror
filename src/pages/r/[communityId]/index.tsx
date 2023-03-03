@@ -1,29 +1,28 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import { GetServerSidePropsContext } from "next";
-import React, { useEffect } from "react";
-import { fireStore } from "@/firebase/clientApp";
-import { doc, getDoc } from "firebase/firestore";
-import { Community, updateCurrentCommunity } from "@/store/communitiesSlice";
-import safeJsonStringify from "safe-json-stringify";
-import NotFound from "@/components/Community/NotFound";
-import Header from "@/components/Community/Header";
-import PageContent from "@/components/Layout/PageContent";
 import CreatePostLink from "@/components/Community/CreatePostLink";
+import Header from "@/components/Community/Header";
+import NotFound from "@/components/Community/NotFound";
+import PageContent from "@/components/Layout/PageContent";
 import Posts from "@/components/Posts/Posts";
-import { useDispatch, useSelector } from "react-redux";
+import { fireStore } from "@/firebase/clientApp";
+import { Community, updateCurrentCommunity } from "@/store/communitiesSlice";
+import { doc, getDoc } from "firebase/firestore";
+import { GetServerSidePropsContext, NextPage } from "next";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
+import safeJsonStringify from "safe-json-stringify";
 import About from "../../../components/Community/About";
-import { RootState } from "@/store/store";
 
 type CommunityPageProps = {
   communityData: Community;
 };
 
-const CommunityPage: React.FC<CommunityPageProps> = ({ communityData }) => {
+const CommunityPage: NextPage<CommunityPageProps> = ({ communityData }) => {
   const dispatch = useDispatch();
   useEffect(() => {
     if (!communityData.id) return;
     dispatch(updateCurrentCommunity(communityData));
-  }, []);
+  }, [communityData]);
 
   if (!communityData.id) {
     return <NotFound communityName={communityData as unknown as string} />;

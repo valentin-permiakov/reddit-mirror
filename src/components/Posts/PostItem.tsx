@@ -14,8 +14,10 @@ import {
 import moment from "moment";
 import React, { useState } from "react";
 import { AiOutlineDelete } from "react-icons/ai";
-import { BsChat } from "react-icons/bs";
+import { BsChat, BsDot } from "react-icons/bs";
 import { useRouter } from "next/router";
+import { FaReddit } from "react-icons/fa";
+import Link from "next/link";
 import {
   IoArrowDownCircleOutline,
   IoArrowDownCircleSharp,
@@ -37,6 +39,7 @@ type PostItemProps = {
   ) => void;
   onDeletePost: (post: Post) => Promise<boolean>;
   onSelectPost?: (post: Post) => void;
+  isHomePage?: boolean;
 };
 
 const PostItem: React.FC<PostItemProps> = ({
@@ -46,6 +49,7 @@ const PostItem: React.FC<PostItemProps> = ({
   onVote,
   onDeletePost,
   onSelectPost,
+  isHomePage,
 }) => {
   const [loadingImage, setLoadingImage] = useState(true);
   const [loadingDelete, setLoadingDelete] = useState(false);
@@ -130,6 +134,32 @@ const PostItem: React.FC<PostItemProps> = ({
         <Stack spacing={1} p="10px">
           <Stack direction="row" spacing={0.6} align="center" fontSize="9pt">
             {/* home page check */}
+            {isHomePage && (
+              <>
+                {post.communityImageURL ? (
+                  <Image
+                    src={post.communityImageURL}
+                    alt="community avatar"
+                    borderRadius="full"
+                    boxSize="18px"
+                    mr={2}
+                  />
+                ) : (
+                  <Icon as={FaReddit} fontSize="18pt" mr={1} color="blue.500" />
+                )}
+
+                <Text
+                  fontWeight={700}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    router.push(`r/${post.communityId}`);
+                  }}
+                  _hover={{ textDecoration: "underline" }}
+                >{`r/${post.communityId}`}</Text>
+
+                <Icon as={BsDot} color="gray.500" fontSize={8} />
+              </>
+            )}
             <Text color="gray.500">
               {`Posted by u/${post.creatorDisplayName} ${moment(
                 new Date(post.createdAt.seconds * 1000)
@@ -165,7 +195,7 @@ const PostItem: React.FC<PostItemProps> = ({
             <Icon as={BsChat} mr={2} />
             <Text fontSize="9pt">{post.numberOfComments}</Text>
           </Flex>
-          <Flex
+          {/* <Flex
             align="center"
             p="8px 10px"
             borderRadius={4}
@@ -184,7 +214,7 @@ const PostItem: React.FC<PostItemProps> = ({
           >
             <Icon as={IoBookmarkOutline} mr={2} />
             <Text fontSize="9pt">Save</Text>
-          </Flex>
+          </Flex> */}
           {userIsCreator && (
             <Flex
               align="center"
