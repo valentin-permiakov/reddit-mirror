@@ -48,13 +48,13 @@ const CommentItem: React.FC<CommentItemProps> = ({
         </Stack>
         <Text fontSize="10pt">{comment.commentText}</Text>
         <Stack direction="row" align="center" cursor="pointer" color="gray.500">
-          <Icon as={IoArrowUpCircleOutline} />
-          <Icon as={IoArrowDownCircleOutline} />
+          {/* <Icon as={IoArrowUpCircleOutline} />
+          <Icon as={IoArrowDownCircleOutline} /> */}
           {userId === comment.creatorId && (
             <>
-              <Text fontSize="9pt" _hover={{ color: "blue.500" }}>
+              {/* <Text fontSize="9pt" _hover={{ color: "blue.500" }}>
                 Edit
-              </Text>
+              </Text> */}
               <Text
                 fontSize="9pt"
                 _hover={{ color: "blue.500" }}

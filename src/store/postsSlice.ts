@@ -41,6 +41,9 @@ export const postsSlice = createSlice({
     loadPosts: (state, action: PayloadAction<Post[]>) => {
       state.posts = action.payload;
     },
+    updatePosts: (state, action: PayloadAction<Post[]>) => {
+      action.payload.forEach((post) => state.posts.push(post));
+    },
     deletePost: (state, action: PayloadAction<string>) => {
       state.posts = state.posts.filter((post) => post.id !== action.payload);
     },
@@ -58,6 +61,7 @@ export const postsSlice = createSlice({
 
 export const {
   loadPosts,
+  updatePosts,
   deletePost,
   loadPostVotes,
   selectPost,

@@ -30,6 +30,7 @@ import useSelectFile from "../../hooks/useSelectFile";
 
 type NewPostFormProps = {
   user: User;
+  communityImageURL?: string;
 };
 type TabItem = {
   title: string;
@@ -44,21 +45,12 @@ const formTabs: TabItem[] = [
     title: "Images & Video",
     icon: IoImageOutline,
   },
-  {
-    title: "Link",
-    icon: BsLink45Deg,
-  },
-  {
-    title: "Poll",
-    icon: BiPoll,
-  },
-  {
-    title: "Talk",
-    icon: BsMic,
-  },
 ];
 
-const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
+const NewPostForm: React.FC<NewPostFormProps> = ({
+  user,
+  communityImageURL,
+}) => {
   const router = useRouter();
   const { onSelectFile, selectedFile, setSelectedFile } = useSelectFile();
   const [selectedTab, setSelectedTab] = useState(formTabs[0].title);
@@ -75,6 +67,7 @@ const NewPostForm: React.FC<NewPostFormProps> = ({ user }) => {
     const { communityId } = router.query;
     const newPost: Post = {
       communityId: communityId as string,
+      communityImageURL: communityImageURL || "",
       creatorId: user.uid,
       creatorDisplayName: user.email!.split("@")[0],
       title: textInputs.title,

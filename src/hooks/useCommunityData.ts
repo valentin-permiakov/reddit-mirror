@@ -15,6 +15,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { useDispatch, useSelector } from "react-redux";
 import {
   addCommunity,
+  changeSnippetsFetched,
   Community,
   CommunitySnippet,
   removeCommunity,
@@ -23,6 +24,7 @@ import {
   updateCurrentCommunity,
 } from "../store/communitiesSlice";
 import { RootState } from "../store/store";
+import { reset } from "@/store/communitiesSlice";
 
 const useCommunityData = () => {
   const [isLoading, setisLoading] = useState(false);
@@ -64,6 +66,7 @@ const useCommunityData = () => {
       const snippets = snippetDocs.docs.map((doc) => ({ ...doc.data() }));
 
       dispatch(updateCommunitySnippets(snippets as CommunitySnippet[]));
+      dispatch(changeSnippetsFetched(true));
     } catch (error: any) {
       console.log("getMySnippets error", error.message);
       setError(error.message);
@@ -155,7 +158,11 @@ const useCommunityData = () => {
   };
 
   useEffect(() => {
-    if (!user) return;
+    if (!user) {
+      dispatch(reset());
+      dispatch(changeSnippetsFetched(false));
+      return;
+    }
     getMySnippets();
   }, [user]);
 
